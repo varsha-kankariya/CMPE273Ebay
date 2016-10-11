@@ -1,0 +1,14 @@
+{
+  "name": "AngulasJSApplication",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "ejs": "*",
+    "express": "3.2.6",
+    "node-constants": "0.0.2"
+  }
+}

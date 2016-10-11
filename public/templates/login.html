@@ -1,0 +1,93 @@
+<div class="row" ng-controller="loginCntrl">
+
+
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#login">Login</a></li>
+		<li><a data-toggle="tab" href="#register">Register</a></li>
+	</ul>
+
+	<div class="tab-content">
+
+		<div id='login' class="col-md-4 tab-pane fade in active">
+			<div class="row">
+				<div class="col-md-12" style="margin: 10px;">
+					Username:<br>
+					<input type="text" name="username" ng-model="email_id">
+				</div>
+				<div class="col-md-12" style="margin: 10px;">
+					Password:<br>
+					<input type="password" name="passwd" ng-model="passwd">
+				</div>
+
+				<div class="col-md-12" style="margin: 10px;">
+					<div class="alert alert-danger" ng-hide="invalid_login">
+						<strong>Incorrect username or password</strong>
+					</div>
+					<div class="alert alert-danger" ng-hide="validlogin">
+						<strong>Welcom User to the portal</strong>
+					</div>
+					<input type="submit" class="btn btn-success" ng-click="submitLoginDtls();"
+						value="Login" />
+				</div>
+			</div>
+		</div>
+
+
+
+		<div id='register' class="col-md-4 tab-pane fade">
+			<div class="row">
+				<div class="col-md-12" style="margin: 10px;">
+					First Name:<br>
+					<input type="text" name="firstName" ng-model="first_name" maxlength="10"
+						required />
+				</div>
+				<div class="col-md-12" style="margin: 10px;">
+					Last Name:<br>
+					<input type="text" name="lastName" ng-model="last_name" maxlength="20"
+						required />
+				</div>
+
+				<div class="col-md-12" style="margin: 10px;">
+					BirthDate:<br>
+					<input type="text" name="birthdate" ng-model="birthdate"
+						placeholder="DD/MM/YYYY" />
+					<!--TODO : Insert pattern here for validating birthdate -->
+				</div>
+
+				<div class="col-md-12" style="margin: 10px;">
+					Contact No:<br>
+					<input type="number" name="contactNo" ng-model="contact_no" maxlength="10" />
+				</div>
+				<div class="col-md-12" style="margin: 10px;">
+					Email Id:<br>
+					<input type="email" name="emailId" ng-model="email_id" required />
+					<!-- TODO : Insert pattern here for validating email Id -->
+				</div>
+
+				<div class="col-md-12" style="margin: 10px;">
+					Password:<br>
+					<input type="password" name="userPasswd" ng-model="passwd"
+						pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+						title="Must contain at least one number and one uppercase and lowercase letter, 
+					and at least 8 or more characters"
+						required />
+					<!-- TODO : Insert pattern here for validating email Id -->
+				</div>
+
+
+				<input type="submit" class="btn btn-success" ng-click="registerNewUser();"
+					value="Register" />
+				<div class="col-md-12" style="margin: 10px;">
+					<div class="alert alert-danger" ng-hide="invalid_register">
+						<strong>Could not register successfully!! Check your details</strong>
+					</div>
+					<div class="alert alert-success" ng-hide="valid_register">
+						<strong>Registered successfully.Please login for accessing the account!!</strong>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>
+</div>

@@ -1,0 +1,74 @@
+<div class="row" ng-controller="userDtlCntrl">
+	<div class="col-md-3"></div>
+	<div class="col-md-6">
+		<div class="panel-group">
+			<div class="panel panel-info">
+				<div class="panel-heading">Personal Information :{{user_info.first_name}}</div>
+				<div class="panel-body">
+
+					<table class="table table-striped">
+						<tr>
+							<td>First Name</td>
+							<td>{{user_info.first_name}}</td>
+						</tr>
+						<tr>
+							<td>Last Name</td>
+							<td>{{user_info.last_name}}</td>
+						</tr>
+						<tr>
+							<td>BirthDate</td>
+							<td>{{user_info.birthdate}}</td>
+						</tr>
+						<tr>
+							<td>Contact No</td>
+							<td>{{user_info.contact_no}}</td>
+						</tr>
+						<tr>
+							<td>Email ID</td>
+							<td>{{user_info.email_id}}</td>
+						</tr>
+						
+
+					</table>
+				</div>
+			</div>
+			
+			<div class="panel panel-info">
+				<div class="panel-heading">Account Information</div>
+				<div class="panel-body">
+
+					<table class="table table-striped">
+						<tr>
+							<td>Credit Card No</td>
+							<td>{{user_info.credit_card_no}}</td>
+						</tr>
+						<tr>
+							<td>Card Exp Date</td>
+							<td>{{user_info.exp_date}}</td>
+						</tr>
+						<tr>
+							<td>Security Code</td>
+							<td>{{user_info.cvv}}</td>
+						</tr>
+						<tr>
+							<td>Paypal Email Id</td>
+							<td>{{user_info.paypal_emailId}}</td>
+						</tr>
+						<tr>
+							<td>Total Amt Debited</td>
+							<td>{{user_info.amt_dbt}}</td>
+						</tr>
+						<tr>
+							<td>Total Amt Credited</td>
+							<td>{{user_info.amt_crdt}}</td>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	<div class="col-md-3"></div>
+
+</div>

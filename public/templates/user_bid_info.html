@@ -1,0 +1,36 @@
+<div class="row" ng-controller="userDtlCntrl">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+
+		<div class="panel panel-info">
+			<div class="panel-heading">User Bid Info</div>
+			<div class="panel-body">
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Description</th>
+							<th>Min Bid Amt($)</th>
+							<th>Bid Amt($)</th>
+							<th>Bid Valid Till</th>
+							<th>Bidded On</th>
+						</tr>
+					</thead>
+					<tr ng-repeat = "bid_dtl in bid_dtls">
+						<td>{{bid_dtl.item_name}}</td>
+						<td>{{bid_dtl.item_desc}}</td>
+						<td>{{bid_dtl.min_amt}}</td>
+						<td>{{bid_dtl.bid_amt}}</td>
+						<td>{{bid_dtl.bid_end_date}}</td>
+						<td>{{bid_dtl.bid_date}}</td>
+						
+					</tr>	
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-md-2"></div>
+
+</div>

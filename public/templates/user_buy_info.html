@@ -1,0 +1,34 @@
+<div class="row" ng-controller="userDtlCntrl">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+
+		<div class="panel panel-info">
+			<div class="panel-heading">User Buying Info</div>
+			<div class="panel-body">
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Description</th>
+							<th>QTY Bought</th>
+							<th>Total Cost($)</th>
+							<th>Seller</th>
+							
+						</tr>
+					</thead>
+					<tr ng-repeat = "buy_dtl in buy_dtls">
+						<td>{{buy_dtl.item_name}}</td>
+						<td>{{buy_dtl.item_desc}}</td>
+						<td>{{buy_dtl.qty}}</td>
+						<td>{{buy_dtl.total_cost}}</td>
+						<td>{{buy_dtl.seller_name}}</td>
+					</tr>	
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-md-2"></div>
+
+</div>

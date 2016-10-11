@@ -1,0 +1,35 @@
+<div class="panel panel-default" ng-controller="headerCntrl">
+
+	<nav class="navbar navbar-default navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Ebay(Hi {{user_dtls.first_name}}!)</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li class="active" ng-click="goToHomePage();"><a href="#">Home</a></li>
+				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
+					href="#">My ebay<span class="caret"></span></a>
+					<ul class="dropdown-menu">
+						<li><a href="" ng-click="dispBuyInfo();">Buying</a></li>
+						<li><a href="" ng-click="dispSellInfo();">Selling</a></li>
+						<li><a href="" ng-click="dispBidInfo();">Bidding</a></li>
+						<li><a href="" ng-click="dispPersonalInfo();">My Account</a></li>
+					</ul></li>
+
+			</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+
+				<li><form action="/logout" method="post">
+						<input type="submit" value="Logout" class="btn btn-default" />
+					</form></li>
+				<li><a href="#" ng-click="displayCartItems();"> <span
+						class="glyphicon glyphicon-shopping-cart"></span><span class="badge">{{cartItems.length}}</span></a></li>
+
+			</ul>
+
+		</div>
+	</nav>
+
+
+</div>

@@ -1,0 +1,145 @@
+<div class="rows" ng-controller="homeCntrl">
+	<div class='col-md-12'>
+		<ul class="nav nav-tabs">
+			<li class="active"><a data-toggle="tab" href="#buy">Buy</a></li>
+			<li><a data-toggle="tab" href="#sell">Sell</a></li>
+		</ul>
+		<div class="tab-content">
+
+			<div id='buy' class="col-md-12 tab-pane fade in active">
+				<br>
+				<table class='table'>
+					
+					<tr ng-repeat="listing in listings">
+						
+						<td style="width: 50%">
+							Item Name : {{listing.item_name}}<br />Item_Desc : {{listing.item_desc}}
+							<br />Seller Name: {{listing.first_name+" "+listing.last_name}} <br />
+						</td>
+						<td style="width: 25%">
+							<div ng-show="listing.list_type == 'BUY'">
+								Price : {{listing.price}} <br />Qty:
+								<input type="text" ng-model="ordered_qty"></input>
+							</div>
+							<div ng-show="listing.list_type == 'BID'">
+								Min Bid Amount : {{listing.price}}<br>
+								<div ng-show="listing.isBidValid">
+									Place your bid : <br />
+									<input type="number" ng-model='bid_amt' />
+									<br />
+									<button type="button" class="btn btn-primary"
+										ng-click="saveBidAmt(listing,bid_amt)">Bid</button>
+								</div>
+
+							</div>
+						</td>
+
+						<td style="width: 25%" ng-show="listing.list_type == 'BUY'">
+							<button type="button" class="btn btn-primary"
+								ng-click="addItemToCart(listing)">Add to Cart</button>
+						</td>
+						<td style="width: 25%" ng-show="listing.list_type == 'BID'">
+							<button type="button" class="btn btn-primary"
+								ng-click="checkIfBidValid(listing)">Place Bid</button>
+							
+						</td>
+					</tr>
+
+					
+				</table>
+			</div>
+
+			<div id='sell' class="col-md-12 tab-pane fade ">
+				<div class="panel-group">
+
+					<div class="panel panel-default">
+						<div class="panel-heading">Describe your item</div>
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>Item name</td>
+									<td>
+										<input type="text" ng-model="item_name" required>
+									</td>
+								</tr>
+								<tr>
+									<td>Item desc</td>
+									<td>
+										<input type="text" ng-model="item_desc" required>
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">Select format and price</div>
+						<div class="panel-body">
+							<div>
+								<table class="table">
+									<tr>
+										<td>Listing Format :</td>
+										<td>
+											<button type="button" class="btn btn-warning"
+												ng-click="enableListingMode('BID');">Auction</button>
+										</td>
+										<td>
+											<button type="button" class="btn btn-warning"
+												ng-click="enableListingMode('BUY');">Fixed Price</button>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<!-- TO be displayed if 'Auction' button is clicked -->
+							<div ng-show="isBid">
+
+								<table class="table">
+									<tr>
+										<td>Starting price(in $)</td>
+										<td>
+											<input type="number" ng-model="min_bid_amt" required>
+										</td>
+									</tr>
+								</table>
+							</div>
+							<!-- TO be displayed if 'Fixed Price' button is clicked -->
+							<div ng-show="isBuy">
+
+								<table class="table">
+									<tr>
+										<td>Price Per Unit(in $)</td>
+										<td>
+											<input type="number" ng-model="per_unit_price" required>
+										</td>
+									</tr>
+									<tr>
+										<td>Quantity</td>
+										<td>
+											<input type="number" ng-model="total_qty" required>
+										</td>
+									</tr>
+								</table>
+
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-default">
+						<div class="panel-heading">Review Your Preferences</div>
+						<div class="panel-body">
+							<table class="table">
+								<tr>
+									<td>Paypal Email Address</td>
+									<td>
+										<input type="email" ng-model="paypal_emaiIId" required />
+									</td>
+								</tr>
+							</table>
+
+						</div>
+					</div>
+				</div>
+				<button type="button" class="btn btn-primary btn-block"
+					ng-click="listItem();">List it!</button>
+			</div>
+		</div>
+	</div>
+</div>

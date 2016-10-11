@@ -1,0 +1,40 @@
+<div class="row" ng-controller="userDtlCntrl">
+	<div class="col-md-2"></div>
+	<div class="col-md-8">
+		<div class="panel panel-info">
+			<div class="panel-heading">User Selling Info</div>
+			<div class="panel-body">
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Item</th>
+							<th>Description</th>
+							<th>Total inventory</th>
+							<th>Sold inventory</th>
+							<th>Price per Unit</th>
+							<th>Listing Created On</th>
+							<th>BID or BUY</th>
+							<th>Auction Valid Till</th>
+							
+						</tr>
+					</thead>
+					<tr ng-repeat="user_sell_dtl in user_sell_dtls">
+						<td>{{user_sell_dtl.item_name}}</td>
+						<td>{{user_sell_dtl.item_desc}}</td>
+						<td>{{user_sell_dtl.total_qty}}</td>
+						<td>{{user_sell_dtl.sold_qty}}</td>
+						<td>{{user_sell_dtl.price}}</td>
+						<td>{{user_sell_dtl.created_date}}</td>
+						<td>{{user_sell_dtl.list_type}}</td>
+						<td ng-show="sell_dtl.list_type == 'BID'">{{user_sell_dtl.bid_end_date}}</td>
+						<!--  <td ng-show="sell_dtl.list_type == 'BUY'">--</td> -->
+					</tr>	
+				</table>
+			</div>
+		</div>
+
+	</div>
+	<div class="col-md-2"></div>
+
+</div>

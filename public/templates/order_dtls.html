@@ -1,0 +1,119 @@
+<div class="row" ng-controller="orderPageCntrl">
+
+	<div class="col-md-8">
+
+		<div class="panel-group">
+			<div>
+				<h2>Pay with</h2>
+				<div class="panel panel-default">
+					<table class="table">
+						<tr>
+							<td><input type="text" ng-model="cardNo" placeholder="Card Number"
+									pattern="^[1-9]{1}[0-9]{12}(?:[0-9]{3})?$" required /></td>
+						</tr>
+						<tr>
+							<td>Expiration Date : <input type="date" ng-model="cardExpdate"
+									placeholder="MM/YYYY" required /></td>
+
+						</tr>
+						<tr>
+							<td>Security Code : <input type="number" ng-model="cardSecNo"
+									palceholder="ddd" required /></td>
+						</tr>
+
+
+					</table>
+				</div>
+			</div>
+			<div>
+				<h2>Ship to</h2>
+				<div class="panel panel-default">
+
+					<table>
+						<tr>
+							<td>Street Address : <input type="text" ng-model="ship_street_addr1"
+									placeholder="Street Address" required /></td>
+							<td>Street Address#2 : <input type="text"
+									ng-model="ship_street_addr2" placeholder="Apt/Suite No" required /></td>
+						</tr>
+						<tr>
+							<td>City : <input type="text" ng-model="ship_city"
+									placeholder="City" required></td>
+							<td>State : <input type="text" ng-model="ship_state"
+									placeholder="State" required></td>
+							<td>Country : <input type="text" ng-model="ship_cntry"
+									placeholder="Country" required></td>
+						</tr>
+						<tr>
+							<td>Zip Code: <input type="number" ng-model="ship_zipcode"
+									palceholder="Zipcode" required></td>
+						</tr>
+						<tr>
+							<td>Phone No : <input type="number" ng-model="ship_phoneno"
+									placeholder="Phone No" required></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div>
+				<h2>Review items</h2>
+				<div ng-repeat="item in cartItems">
+					<div class="panel panel-default">
+						<div class="panel-heading">{{item.seller_name}}</div>
+						<div class="panel-body">
+							<table class="table table table-condensed">
+								<tr>
+									<td>Item Name : {{item.item_name}}</td>
+									<td />
+									<td>Price : {{item.totalCost}}</td>
+
+								</tr>
+								<tr>
+									<td>Item_Desc : {{item.item_desc}}</td>
+									<td />
+									<td />
+								</tr>
+								<tr>
+									<td>Qty : {{item.qty}}</td>
+									<td />
+									<td />
+								</tr>
+
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<table class="table">
+				<tr>
+					<td>Item({{cartItems.length}})</td>
+					<td>${{totalCostOfCart}}</td>
+				</tr>
+				<tr style="border-bottom: 1px solid black">
+					<td>Shipping</td>
+					<td>${{shipType.ship_cost}}</td>
+				</tr>
+				<tr>
+					<td>Order Total</td>
+					<td>${{totalOrderCost}}</td>
+				</tr>
+				<tr>
+					<td>
+						<button type="button" class="btn btn-success" ng-click="confirmOrder();">Confirm and pay</button>
+					</td>
+				</tr>
+
+
+			</table>
+		</div>
+
+	</div>
+
+</div>
