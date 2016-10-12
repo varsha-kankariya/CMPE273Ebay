@@ -28,11 +28,11 @@ constants.define(exports, {
 		
 	ADD_ORDER_DTL :"insert into ebaydb.order_dtl(order_dtl_id,buyer_id,order_date,shipping_id,order_status,cart_id) values(null,?,now(),?,?,?);",
 	
-	ADD_TXN_DTL : "insert into ebaydb.txn_dtl(txn_dtl_id,order_dtl_id,listing_id,seller_id,amount,qty) values(null,?,?,?,?,?);",
+	ADD_TXN_DTL : "insert into ebaydb.txn_dtl(order_dtl_id,listing_id,seller_id,amount,qty) values ?;",
 	
-	DBT_AMT_FROM_BUYER_ACCT : "update ebaydb.account_dtls acct_dtls set acct_dtls.amt_dbt = (acct_dtls.amt_dbt + ?) where acct_dtls.user_id = ?;",
+	UPDATE_BUYER_ACCT : "update ebaydb.account_dtls acct_dtls set acct_dtls.credit_card_no = ?,acct_dtls.exp_date= ?,acct_dtls.cvv=?,acct_dtls.amt_dbt = (acct_dtls.amt_dbt + ?) where acct_dtls.acct_dtl_id=?;",
 		
-	CRDT_AMT_IN_SELLER_ACCT : "update ebaydb.account_dtls acct_dtls set acct_dtls.amt_crdt = acct_dtls.amt_crdt + ? where acct_dtls.user_id = ?;",
+	CRDT_AMT_IN_SELLER_ACCT : "update ebaydb.account_dtls acct_dtls set acct_dtls.amt_crdt = acct_dtls.amt_crdt + ? where acct_dtls.acct_dtl_id = (select users.acct_dtl_id from ebaydb.users users where users.user_id = ?);",
 	
 	UPDATE_ITEM_INVT : "update ebaydb.items items set items.sold_qty = items.sold_qty + ? where items.item_id =(select listings.item_id from ebaydb.listings listings where listings.listing_id = ?);",
 		

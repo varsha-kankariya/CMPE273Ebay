@@ -10,6 +10,7 @@ exports.createConnectionPool = function() {
 		connectionLimit : 500,
 		waitForConnections : true,
 		queueLimit : 0,
+		multipleStatements: true,
 		host : 'localhost', // host where mysql server is running
 		user : 'root', // user for the mysql application
 		password : 'abcd@1234', // password for the mysql application
@@ -379,6 +380,80 @@ exports.updateBuyerAcctForAmt = function(callback, sqlQuery,options) {
 	});
 };
 
+
+exports.insertTxnDtlsForOrderinDb = function(callback, sqlQuery,options) {
+
+	console.log("\nSQL Query::" + sqlQuery);
+
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			throw err;
+		} else {
+			connection.query(sqlQuery,options, function(err, rows, fields) {
+				if (err) {
+					console.log("ERROR: " + err.message);
+				} else { // return err or result
+					console.log("DB Results:" + rows);
+					callback(err, rows);
+				}
+				console.log("\nConnection released..");
+				connection.release();
+			});
+
+		}
+	});
+};
+
+exports.updateSellerForAmtCrdtInDb = function(callback, sqlQuery) {
+
+	console.log("\nSQL Query::" + sqlQuery);
+
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			throw err;
+		} else {
+			connection.query(sqlQuery, function(err, rows, fields) {
+				if (err) {
+					console.log("ERROR: " + err.message);
+				} else { // return err or result
+					console.log("DB Results:" + rows);
+					callback(err, rows);
+				}
+				console.log("\nConnection released..");
+				connection.release();
+			});
+
+		}
+	});
+};
+
+
+
+exports.updateItemInventoryInDb = function(callback, sqlQuery) {
+
+	console.log("\nSQL Query::" + sqlQuery);
+
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			throw err;
+		} else {
+			connection.query(sqlQuery, function(err, rows, fields) {
+				if (err) {
+					console.log("ERROR: " + err.message);
+				} else { // return err or result
+					console.log("DB Results:" + rows);
+					callback(err, rows);
+				}
+				console.log("\nConnection released..");
+				connection.release();
+			});
+
+		}
+	});
+};
+
+
+
 exports.updateCartStatus = function(callback, sqlQuery,options) {
 
 	console.log("\nSQL Query::" + sqlQuery);
@@ -518,6 +593,10 @@ exports.fetchUserPersonalDtls = function(callback, sqlQuery,options) {
 		}
 	});
 };
+
+
+
+
 
 
 

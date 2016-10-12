@@ -11,8 +11,8 @@ angular.module('ebay')
 			$scope.validlogin = true;
 			$scope.invalid_register = true;
 			$scope.valid_register = true;
-			$scope.email_id = "abc@gmail.com";
-			$scope.passwd ="aaaaaaaaa@1";
+			$scope.email_id = "xyz@gmail.com";
+			$scope.passwd ="bbbbbbbbb@1";
 			
 			
 			
