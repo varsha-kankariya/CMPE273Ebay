@@ -67,7 +67,12 @@ exports.checkLogin = function(req, res) {
 				bcrypt.compare(userPasswd, results[0].passwd, function(err, isPasswdValid) {
 
 					if (err) {
-						throw err; ///Erro while comparing the hashes
+						console.log("Invalid Login");
+						json_resp = {
+							"statusCode" : 401
+						};
+						res.send(json_resp);
+						res.end();///Erro while comparing the hashes
 					} else {
 
 						if (isPasswdValid == true) { //Valid Login
