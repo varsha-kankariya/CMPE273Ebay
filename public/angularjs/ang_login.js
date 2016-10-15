@@ -31,6 +31,19 @@ angular.module('ebay')
 						$scope.validlogin = true;
 						
 					} else {
+						
+						$.sessionTimeout({
+							logoutUrl: '/logout',
+					        warnAfter : 30*60*1000,
+					        redirAfter: 30*60*1000,
+					        
+					        onRedir: function () {
+					      	  console.log("onRedir :Your session has expired");
+					      	  
+					           
+					        }
+					    });
+						
 						$rootScope.totalCostOfCart = data.totalCostOfCart;
 						$rootScope.cartItems = JSON.parse(data.cartItems);
 					
