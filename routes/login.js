@@ -6,9 +6,11 @@ var mysql = require('./mysql');
 var sql_queries = require('./sql_queries');
 var bcrypt = require('bcrypt-nodejs');
 
+//var winston = require('winston');
+
 function generateHash(password) {
 	 return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
-};
+}
 
 function populateCartAndTotalCost(req, results) {
 
@@ -57,7 +59,7 @@ exports.checkLogin = function(req, res) {
 	var userPasswd = req.param("passwd");
 	var json_resp;
 	// If the username and password match
-
+	global.winston.log('info',"------------trying to use winston-----------------");
 	mysql.fetchUserDtlsWithCredentials(function(err, results) {
 		if (err) {
 			throw err;
