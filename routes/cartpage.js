@@ -6,6 +6,7 @@ var sql_queries = require('./sql_queries');
 function removeItemFromCartInSession(req){
 	
 	var cart_dtl_id  = req.param("cart_dtl_id");
+	global.winston.log('info',req.session.email_id +" : Removing item from cart");
 	var cartItemsInSess = req.session.cartItems;
 	var totalCostOfCart = Number(req.session.totalCostOfCart);
 	console.log("In server : cartpage : Total cost before removing the item  : "+ totalCostOfCart);
@@ -13,7 +14,7 @@ function removeItemFromCartInSession(req){
 		
 		if(cartItemsInSess[i].cart_dtl_id == cart_dtl_id) {
 			totalCostOfCart= totalCostOfCart - Number(cartItemsInSess[i].totalCost);
-			
+			global.winston.log('info',req.session.email_id +" : Listing Id removed from cart : "+cartItemsInSess[i].listing_id);
 			cartItemsInSess.splice(i,1);
 			break;
 		}
@@ -21,6 +22,7 @@ function removeItemFromCartInSession(req){
 	
 	console.log("In server : cartpage : Cart after removing the item : " + JSON.stringify(cartItemsInSess));
 	console.log("In server : cartpage : Total cost after removing the item  : "+ totalCostOfCart);
+	
 	req.session.cartItems = cartItemsInSess;
 	req.session.totalCostOfCart =totalCostOfCart;
 	
@@ -36,6 +38,7 @@ function removeCartEntry(req,res){
 	mysql.removeCartEntry(function(err,results){
 		
 		if(err){
+			console.log("Error in removeCartEntry() : "+err.message);
 			throw err;
 		}else{
 			
@@ -72,6 +75,7 @@ function removeCartEntry(req,res){
 	 mysql.removeItemFromCartDtl(function(err,results){
 		 
 		 if(err){
+			 console.log("Error in removeItemFromCart() : "+err.message);
 			 throw err;
 		 }else{
 			 if(results){

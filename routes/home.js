@@ -61,6 +61,7 @@ function addDtlsToCartForItem(req, res) {
 				console.log("In server : home.js : cart dtls from session :" + req.session.cartItems[0].item_name);
 				cartItemsAsStr = JSON.stringify(req.session.cartItems);
 				console.log("In server : home.js : cart dtls as string :" + cartItemsAsStr);
+				global.winston.log('info',req.session.email_id +" : Added item to the cart : Listing Id : " + listing_id);
 				json_resp = {
 
 					"statusCode" : 200,
@@ -68,6 +69,7 @@ function addDtlsToCartForItem(req, res) {
 					"totalCostOfCart" : req.session.totalCostOfCart
 				};
 			} else {
+				global.winston.log('info',req.session.email_id + " : Couldn't add item to the cart.");
 				console.log("In server : couldn't add cart details to the database. ");
 				json_resp = {
 					"statusCode" : 401
@@ -113,6 +115,7 @@ function addItemsToCartForFirstTime(req, res) {
 exports.addItemToCart = function(req, res) {
 
 	var cart_id = req.session.cart_id;
+	global.winston.log('info',req.session.email_id +" : Adding item to the cart : Listing Id: " + req.param("listing_id"));
 	console.log("In server : addItemToCart() : No of items in cart : " + req.session.cartItems.length);
 	//If the item to be added is the first item
 	if (req.session.cartItems.length == 0) {
@@ -184,10 +187,11 @@ exports.addItemToCart = function(req, res) {
 	exports.listItem = function(req, res) {
 
 		var json_resp;
-
+		global.winston.log('info',req.session.email_id + " : Adding a new listing.");
 		mysql.updateAcctForPaypalDtls(function(err, results) {
 
 			if (err) {
+				global.winston.log('info',req.session.email_id + " : Error : "+ err.message);
 				throw err;
 			} else {
 				if (results) {
@@ -212,7 +216,7 @@ exports.addItemToCart = function(req, res) {
 	exports.saveBidDtls = function(req,res){
 		var json_resp;
 		console.log("Saving the bidding details in DB!!!");
-		
+		global.winston.log('info',req.session.email_id + " : Bidded on item with listing Id : "+ req.param("listing_id"));
 		mysql.insertBidDtls(function(err,results) {
 			
 			if(err){

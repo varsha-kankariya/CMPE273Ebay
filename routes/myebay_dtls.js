@@ -7,9 +7,12 @@ var sql_queries = require('./sql_queries');
 exports.getBuyInfo = function(req, res) {
 
 	var json_resp;
+	global.winston.log('info',req.session.email_id + " : User is checking his/her buy history);
+	
 	mysql.fetchUserBuyDtls(function(err, results) {
 
 		if (err) {
+			console.log("Error in getBuyInfo() : "+err.message);
 			throw err;
 		} else {
 			if (results) {
@@ -34,9 +37,13 @@ exports.getBuyInfo = function(req, res) {
 exports.getPersonalInfo = function(req, res) {
 
 	var json_resp;
+	
+	global.winston.log('info',req.session.email_id + " : User is checking his/her profile for personal details");
+
 	mysql.fetchUserBuyDtls(function(err, results) {
 
 		if (err) {
+			console.log("Error in getPersonalInfo() : "+err.message);
 			throw err;
 		} else {
 			if (results) {
@@ -61,9 +68,12 @@ exports.getPersonalInfo = function(req, res) {
 exports.getSellInfo = function(req, res) {
 
 	var json_resp;
+	global.winston.log('info',req.session.email_id + " : User is checking his/her sell history");
+
 	mysql.fetchUserBuyDtls(function(err, results) {
 
 		if (err) {
+			console.log("Error in getSellInfo() : "+err.message);
 			throw err;
 		} else {
 			if (results) {
@@ -88,9 +98,12 @@ exports.getSellInfo = function(req, res) {
 exports.getBidInfo = function(req, res) {
 
 	var json_resp;
+	global.winston.log('info',req.session.email_id + " : User is trying to check his/her bidding history ");
+
 	mysql.fetchUserBuyDtls(function(err, results) {
 
 		if (err) {
+			console.log("Error in getBidInfo() : "+err.message);
 			throw err;
 		} else {
 			if (results) {

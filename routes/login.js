@@ -59,9 +59,10 @@ exports.checkLogin = function(req, res) {
 	var userPasswd = req.param("passwd");
 	var json_resp;
 	// If the username and password match
-	global.winston.log('info',"------------trying to use winston-----------------");
+	global.winston.log('info',email_id +" : User trying to login to the system.");
 	mysql.fetchUserDtlsWithCredentials(function(err, results) {
 		if (err) {
+			console.log("Error in checkLogin() : "+err.message);
 			throw err;
 		} else {
 			if (results.length > 0) {
@@ -69,6 +70,7 @@ exports.checkLogin = function(req, res) {
 				bcrypt.compare(userPasswd, results[0].passwd, function(err, isPasswdValid) {
 
 					if (err) {
+						global.winston.log('info',email_id +" : Invalid Login");
 						console.log("Invalid Login");
 						json_resp = {
 							"statusCode" : 401
@@ -85,6 +87,7 @@ exports.checkLogin = function(req, res) {
 							req.session.user_seq_id = results[0].user_id;
 							req.session.email_id = results[0].email_id;
 							req.session.acct_id = results[0].acct_id;
+							global.winston.log('info',req.session.email_id +" : Valid Login");
 							console.log("Fetching user dtls : Acct Id : " + results[0].acct_id);
 
 							console.log("In server : user email id : " + req.session.email_id);
@@ -92,8 +95,10 @@ exports.checkLogin = function(req, res) {
 							mysql.fetchCartForUser(function(err, results) {
 
 								if (err) {
+									console.log("Error while fetching cart for user : "+ err.message);
 									throw err;
 								} else {
+									global.winston.log('info',req.session.email_id +" : Fetching cart for the user");
 									console.log("In server : logn.js : checkLogin() : results as string : " + JSON.stringify(results));
 									if (results.length > 0) {
 										//Set the cart_id in the session
@@ -123,6 +128,7 @@ exports.checkLogin = function(req, res) {
 
 						} else { //Invalid Login
 							console.log("Invalid Login");
+							global.winston.log('info',req.session.email_id +" : Invalid Login");
 							json_resp = {
 								"statusCode" : 401
 							};
@@ -138,6 +144,7 @@ exports.checkLogin = function(req, res) {
 			//If no user record is found in db that means the user has not registered yet
 			else {
 				console.log("Invalid Login");
+				global.winston.log('info',email_id +" : Invalid Login");
 				json_resp = {
 					"statusCode" : 401
 				};
@@ -156,7 +163,7 @@ exports.redirectToHomepage = function(req, res) {
 	var strListings = "";
 	var actualList;
 	console.log("In server : redirectToHomepage() ");
-
+	global.winston.log('info',req.session.email_id +" : Redirecting to home page");
 	// Checks before redirecting whether the session is valid
 	if (req.session.email_id) {
 		// Set these headers to notify the browser not to maintain any cache for
@@ -165,8 +172,9 @@ exports.redirectToHomepage = function(req, res) {
 		//fetch the listings for the user
 
 		mysql.fetchListings(function(err, results) {
-
+			
 			if (err) {
+				console.log("Error in redirectToHomepage(): " + err.message);
 				throw err;
 			} else {
 				actualList = results;
@@ -207,16 +215,19 @@ function createNewUserRecord(req, res, acct_id) {
 	var json_resp;
 	var hashedPasswd = generateHash(req.body.passwd);
 	console.log("Hashed Password :" + hashedPasswd);
+	global.winston.log('info',req.body.email_id +" : Registering new user");
 	mysql.addNewUserRecord(function(err, results) {
 
 		if (err) {
 
 			if (err.code == 'ER_DUP_ENTRY') {
 				console.log("In server : Some error while registering the user : " + err.code);
+				global.winston.log('info',req.body.email_id +" : User already has a account");
 				json_resp = {
 					"status_code" : 402
 				};
 			} else {
+				console.log("Error in createNewUserRecord() : "+err.message);
 				json_resp = {
 					"status_code" : 401
 				};
@@ -225,7 +236,7 @@ function createNewUserRecord(req, res, acct_id) {
 
 		} else {
 			if (results.insertId) {
-
+				global.winston.log('info',req.body.email_id +" : New user account created");
 				console.log("In server : Registering a new user : " + results.insertId);
 				json_resp = {
 					"user_id" : results.insertId,
@@ -250,6 +261,7 @@ exports.registerUser = function(req, res) {
 
 	mysql.createNewUserAcct(function(err, results) {
 		if (err) {
+			global.winston.log('info',req.body.email_id +" : Error : " + err.message);
 			throw err;
 		} else {
 			if (results.insertId) {
@@ -273,6 +285,7 @@ exports.registerUser = function(req, res) {
 // Logout the user - invalidate the session
 exports.logout = function(req, res) {
 	console.log("In server : Destroying session");
+	global.winston.log('info',req.session.email_id +" : User logging out");
 	req.session.destroy();
 
 	res.redirect('/');

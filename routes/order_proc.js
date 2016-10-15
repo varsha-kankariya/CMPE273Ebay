@@ -17,12 +17,15 @@ function updateItemInventory(req,res){
 	mysql.updateItemInventoryInDb(function(err,results) {
 		
 		if(err){
+			console.log("Error in updateItemInventory() : "+err.message);
 			throw err;
 		}else{
 			if(results){
-				console.log("Confirmed ore")
+				console.log("Confirmed order");
+				global.winston.log('info',req.session.email_id + " : User's order was confirmed with order Id : " + req.session.order_seq_id);
 				json_resp = {
-						"status_code" : 200
+						"status_code" : 200,
+						"order_id" : req.session.order_seq_id
 					};
 				res.send(json_resp);
 				res.end();
@@ -54,6 +57,7 @@ function updateSellerDtlsForAmtCredited(req,res){
 	mysql.updateSellerForAmtCrdtInDb(function(err,results){
 		
 		if(err){
+			console.log("Error in updateSellerDtlsForAmtCredited() : "+err.message);
 			throw err;
 		}else{
 			if(results){
@@ -97,6 +101,7 @@ function insertTxnDtlsForOrder(req,res){
 	
 	mysql.insertTxnDtlsForOrderinDb(function(err,results) {
 		if(err){
+			console.log("Error in insertTxnDtlsForOrder() : "+err.message);
 			throw err;
 		}else{
 			if(results){
@@ -122,6 +127,7 @@ function updateCartStatus(req,res){
 	var json_resp;
 	mysql.updateCartStatus(function(err,results) {
 		if(err){
+			console.log("Error in updateCartStatus() : "+err.message);
 			throw err;
 		}else{
 			if(results){
@@ -145,6 +151,7 @@ function updateBuyerAcctForAmt(req,res){
 	mysql.updateBuyerAcctForAmt(function(err,results) {
 		
 		if(err){
+			console.log("Error in updateBuyerAcctForAmt() : "+err.message);
 			throw err;
 		}else{
 			if(results){
@@ -169,6 +176,7 @@ function insertOrderDtlsinDb(req,res,shipping_seq_id){
 	console.log("Inserting shipping details");
 	mysql.addOrderDtls(function(err,results) {
 		if(err){
+			console.log("Error in insertOrderDtlsinDb() : "+err.message);
 			throw err;
 		}else{
 			if(results){
@@ -193,7 +201,7 @@ function insertShippingDtlsinDb(req,res){
 	var json_resp;
 	mysql.addShippingDtls(function(err,results) {
 		if(err){
-			
+			console.log("Error in insertShippingDtlsinDb() : "+err.message);
 			throw err;
 		}else{
 			
@@ -218,7 +226,7 @@ function insertShippingDtlsinDb(req,res){
 
 
 exports.confirmOrder =function(req,res){
-	
+	global.winston.log('info',req.session.email_id + " : User is trying to confirm the order with cart ID : " + req.session.cart_id);
 	insertShippingDtlsinDb(req,res);
 	
 };
