@@ -4,6 +4,7 @@
  */
 
 var express = require('express')
+	, winston =require('winston')
   , routes = require('./routes')
   , http = require('http')
   , login = require('./routes/login')
@@ -16,6 +17,21 @@ var express = require('express')
   , mysql = require('./routes/mysql')
   //Importing the 'client-sessions' module
   , session = require('client-sessions');
+
+winston.emitErrs = true;
+
+winston.add(winston.transports.File,{
+            level: 'info',
+            filename: 'temp.log',
+            handleExceptions: true,
+            json: false,
+            maxsize: 5242880, //5MB
+            maxFiles: 5,
+            colorize: false
+        });
+winston.remove(winston.transports.Console);
+global.winston = winston;
+
 
 var app = express();
 
@@ -48,12 +64,12 @@ if ('development' === app.get('env')) {
 //GET METHODS
 app.get('/', routes.index);
 app.get('/helloworld', helloworld.getHelloWorld);
-
+app.get('/logout', login.logout);
 //POST METHODS
 app.post('/checklogin', login.checkLogin);
 app.post('/registerUser', login.registerUser);
 app.get('/homepage',login.redirectToHomepage);
-app.post('/logout', login.logout);
+
 app.post('/addToCart', home.addItemToCart);
 app.post('/removeFromCart' , cartpage.removeItemFromCart);
 app.post('/listItem',home.listItem);
