@@ -70,6 +70,9 @@ angular.module('ebay').controller('cartPageCntrl', [ '$rootScope', '$scope', '$h
 	$scope.checkout = function() {
 		
 		console.log("In ang_cartpage : Shipping details" + JSON.stringify($rootScope.shipType) );
+		if(!$rootScope.shipType){
+			$rootScope.shipType = $scope.stdShipVal;
+		}
 		$state.go('order_dtl');
 	};
 	
