@@ -1,5 +1,6 @@
 <div class="rows" ng-controller="homeCntrl">
-	<div class='col-md-12'>
+	<div class='col-md-1'></div>
+	<div class='col-md-10'>
 		<ul class="nav nav-tabs">
 			<li class="active"><a data-toggle="tab" href="#buy">Buy</a></li>
 			<li><a data-toggle="tab" href="#sell">Sell</a></li>
@@ -8,14 +9,15 @@
 
 			<div id='buy' class="col-md-12 tab-pane fade in active">
 				<br>
-				<table class='table'>
+				<table class='table' style ="border : 1px solid #ddd;">
 					
 					<tr ng-repeat="listing in listings">
-						
+						<td style="width:150px;height:150px;"><img src="images/box.jpeg" style="height: 100px; width: 100px;"></td>
 						<td style="width: 50%">
 							Item Name : {{listing.item_name}}<br />Item_Desc : {{listing.item_desc}}
 							<br />Seller Name: {{listing.first_name+" "+listing.last_name}} <br />
 						</td>
+						
 						<td style="width: 25%">
 							<div ng-show="listing.list_type == 'BUY'">
 								Price : {{listing.price}} <br />Qty:
@@ -47,6 +49,10 @@
 
 					
 				</table>
+				
+				
+				<div>
+				</div>
 			</div>
 
 			<div id='sell' class="col-md-12 tab-pane fade ">
@@ -67,6 +73,9 @@
 									<td>
 										<input type="text" ng-model="item_desc" required>
 									</td>
+								</tr>
+								<tr>
+									<td>Upload Image : <input type="file" ng-model="uploaded_image"/></td>
 								</tr>
 							</table>
 						</div>
@@ -142,4 +151,5 @@
 			</div>
 		</div>
 	</div>
+	<div class='col-md-1'></div>
 </div>

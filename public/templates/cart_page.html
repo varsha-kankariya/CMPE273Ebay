@@ -1,87 +1,96 @@
 <div class="row" ng-controller="cartPageCntrl">
 	<div class="col-md-8">
-
-
 		<div class="panel-group">
 			<div ng-show="cartItems.length!=0">
 				<div ng-repeat="item in cartItems">
 					<div class="panel panel-default">
 						<div class="panel-heading">{{item.seller_name}}</div>
 						<div class="panel-body">
-							<table class="table table table-condensed">
-								<tr>
-									<td>Item Name : {{item.item_name}}</td>
-									</td>
-									<td>Price : {{item.totalCost}}</td>
-								</tr>
-								<tr>
-									<td>Item_Desc : {{item.item_desc}}</td>
-									<td/>
-									<td/>
-								</tr>
-								<tr>
-									<td>Qty : {{item.qty}}</td>
-									<td/>
-									<td><a href="" ng-click="removeFromCart(item.cart_dtl_id);">Remove</a></td>
-								</tr>
-								
-							</table>
+							<div class="media">
+								<div class="media-left media-middle">
+									<img src="images/box.jpeg" style="height: 110px; width: 110px;" />
+								</div>
+								<div class="media-body">
+									<table class="table">
+										<tr>
+											<td><label>Item Name :</label> {{item.item_name}}</td>
+											<td />
+											<td><label>Price : </label>{{item.totalCost}}</td>
+										</tr>
+										<tr>
+											<td><label>Item_Desc :</label> {{item.item_desc}}</td>
+											<td />
+											<td />
+										</tr>
+										<tr>
+											<td><label>Qty :</label> {{item.qty}}</td>
+											<td />
+											<td><a href="" ng-click="removeFromCart(item.cart_dtl_id);">Remove</a></td>
+										</tr>
+
+									</table>
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- Shipping preferences -->
-				<div class="panel panel-default">
-					<div class="panel-heading">Shipping</div>
-					<div class="panel-body">
-						<h4>Select shipping type</h4>
-						<div class="form-group">
-							<label> <input type="radio" ng-model="shipType"
-									ng-value="fastShipVal" ng-click = "updateShippingDtls(fastShipVal);" checked/> {{fastShipVal.disp_val}}
-							</label> <br /> <label> <input type="radio" ng-model="shipType"
-									ng-value="stdShipVal" ng-click = "updateShippingDtls(stdShipVal);" /> {{stdShipVal.disp_val}}
-							</label> <br /> <label ng-if="checkCost();"> <input
-									type="radio" ng-model="shipType" ng-value="freeShipVal" ng-click = "updateShippingDtls(freeShipVal);"/>
-								{{freeShipVal.disp_val}}
-							</label>
-
-						</div>
-					</div>
-				</div>
-
-				<div class="panel panel-default" ng-hide="isCartEmpty">
-					<div class="panel-body">
-						<table class="table">
-							<tr style="float: right">
-								<td>Subtotal({{cartItems.length}} items) :</td>
-								<td>{{totalCostOfCart}}</td>
-							</tr>
-							<tr style="float: right">
-								<td>Shipping Charges :</td>
-								<td>{{shipType.ship_cost}}</td>
-								<!-- need to add code over here -->
-							</tr>
-							<tr style="float: right">
-								<td>Total :</td>
-								<td>{{totalOrderCost}}</td>
-
-							</tr>
-						</table>
-					</div>
-
 				</div>
 			</div>
-			<div class="panel panel-default" ng-show="cartItems.length==0">
+
+			<!-- Shipping preferences -->
+			<div class="panel panel-default">
+				<div class="panel-heading">Shipping</div>
 				<div class="panel-body">
-					<h4>Your shopping cart is empty, but it doesn't have to be!!!</h4>
+					<h4>Select shipping type</h4>
+					<div class="form-group">
+						<label> <input type="radio" ng-model="shipType"
+								ng-value="fastShipVal" ng-click="updateShippingDtls(fastShipVal);"
+								checked /> {{fastShipVal.disp_val}}
+						</label> <br /> <label> <input type="radio" ng-model="shipType"
+								ng-value="stdShipVal" ng-click="updateShippingDtls(stdShipVal);" />
+							{{stdShipVal.disp_val}}
+						</label> <br /> <label ng-if="checkCost();"> <input type="radio"
+								ng-model="shipType" ng-value="freeShipVal"
+								ng-click="updateShippingDtls(freeShipVal);" /> {{freeShipVal.disp_val}}
+						</label>
+
+					</div>
 				</div>
+			</div>
+
+			<div class="panel panel-default" ng-hide="isCartEmpty">
+				<div class="panel-body">
+					<table class="table">
+						<tr style="border :0;">
+							<td>Subtotal({{cartItems.length}} items) :</td>
+							<td>{{totalCostOfCart}}</td>
+						</tr>
+						<tr style = "border-top : 0;">
+							<td>Shipping Charges :</td>
+							<td>{{shipType.ship_cost}}</td>
+							<!-- need to add code over here -->
+						</tr>
+						<tr>
+							<td><h3>Total :</h3></td>
+							<td><h3>{{totalOrderCost}}</h3></td>
+
+						</tr>
+					</table>
+				</div>
+
 			</div>
 		</div>
-
+		<div class="panel panel-default" ng-show="cartItems.length==0">
+			<div class="panel-body">
+				<h4>Your shopping cart is empty, but it doesn't have to be!!!</h4>
+			</div>
+		</div>
 	</div>
+
+
 	<div class="col-md-4">
 		<div class="panel panel-default">
 
-			<table class="table table table-condensed">
+			<table class="table table-condensed">
 				<thead>
 					<tr>
 						<td><h2>Cart Summary</h2>

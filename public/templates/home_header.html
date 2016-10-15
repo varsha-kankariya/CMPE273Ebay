@@ -3,9 +3,12 @@
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<a class="navbar-brand" href="#">Ebay(Hi {{user_dtls.first_name}}!)</a>
+				<a class="navbar-brand" href="#"><img src="images/ebay_logo.jpg" style="width: 100px; height: 35px;"></a>				
 			</div>
+			
+			
 			<ul class="nav navbar-nav">
+				<li><a href="#">Hi {{user_dtls.first_name}}!</a></li>
 				<li class="active" ng-click="goToHomePage();"><a href="#">Home</a></li>
 				<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"
 					href="#">My ebay<span class="caret"></span></a>
@@ -20,11 +23,11 @@
 
 			<ul class="nav navbar-nav navbar-right">
 
-				<li><form action="/logout" method="post">
-						<input type="submit" value="Logout" class="btn btn-default" />
+				<li><form action="/logout" method="get">
+						<input type="submit" value="Logout" class="btn btn-default"></input>
 					</form></li>
 				<li><a href="#" ng-click="displayCartItems();"> <span
-						class="glyphicon glyphicon-shopping-cart"></span><span class="badge">{{cartItems.length}}</span></a></li>
+						class="glyphicon glyphicon-shopping-cart"></span><span class="badge" style="background-color: #f89406">{{cartItems.length}}</span></a></li>
 
 			</ul>
 
