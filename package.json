@@ -9,6 +9,8 @@
     "bcrypt-nodejs": "0.0.3",
     "ejs": "*",
     "express": "3.2.6",
-    "node-constants": "0.0.2"
+    "morgan": "^1.7.0",
+    "node-constants": "0.0.2",
+    "winston": "^2.2.0"
   }
 }
