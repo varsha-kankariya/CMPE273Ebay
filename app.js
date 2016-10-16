@@ -9,7 +9,6 @@ var express = require('express')
   , http = require('http')
   , login = require('./routes/login')
   , path = require('path')
-  , helloworld = require('./routes/helloworld')
   , home = require('./routes/home')
   , cartpage = require('./routes/cartpage')
   , order_proc = require('./routes/order_proc')
@@ -63,7 +62,7 @@ if ('development' === app.get('env')) {
 
 //GET METHODS
 app.get('/', routes.index);
-app.get('/helloworld', helloworld.getHelloWorld);
+
 app.get('/logout', login.logout);
 //POST METHODS
 app.post('/checklogin', login.checkLogin);
