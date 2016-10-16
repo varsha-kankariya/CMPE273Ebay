@@ -348,6 +348,9 @@ exports.registerUser = function(req, res) {
 
 // Logout the user - invalidate the session
 exports.logout = function(req, res) {
+	
+	console.log("In server : destroying mysql connections.");
+	mysql.destroyConnections();
 	console.log("In server : Destroying session");
 	global.winston.log('info', req.session.email_id + " : User logging out");
 	req.session.destroy();
