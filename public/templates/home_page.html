@@ -20,11 +20,12 @@
 						
 						<td style="width: 25%">
 							<div ng-show="listing.list_type == 'BUY'">
-								Price : {{listing.price}} <br />Qty:
+								Price : ${{listing.price}} <br />Qty:
 								<input type="text" ng-model="ordered_qty"></input>
 							</div>
 							<div ng-show="listing.list_type == 'BID'">
-								Min Bid Amount : {{listing.price}}<br>
+								<div ng-hide="listing.max_bid_amt == 0">Highest Bid Amt : ${{listing.max_bid_amt}}</div><br/>
+								<div>Minimum Bid Amount : ${{listing.price}}</div><br/>
 								<div ng-show="listing.isBidValid">
 									Place your bid : <br />
 									<input type="number" ng-model='bid_amt' />

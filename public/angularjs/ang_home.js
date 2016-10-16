@@ -13,8 +13,8 @@ angular.module('ebay').controller('homeCntrl', [ '$rootScope', '$scope', '$http'
 	$scope.msg = $stateParams.msg;
 	
 	$scope.addItemToCart = function(listing) {
-		
-		console.log("Id of the seller for the item : "+ listing.seller_id);
+
+		console.log("Id of the seller for the item : " + listing.seller_id);
 		//Here the quantity means the ordered quantity by the user
 		var req_data = {
 
@@ -73,13 +73,13 @@ angular.module('ebay').controller('homeCntrl', [ '$rootScope', '$scope', '$http'
 	$scope.listItem = function() {
 
 		var itemPrice;
-		var dispMsg ="";
+		var dispMsg = "";
 		if ($scope.list_type == 'BUY') {
 			itemPrice = $scope.per_unit_price;
 
 		} else if ($scope.list_type == 'BID') {
 			itemPrice = $scope.min_bid_amt;
-			$scope.total_qty =1;
+			$scope.total_qty = 1;
 		}
 		console.log("In ang : listItem : price of the item : " + itemPrice);
 		var req_data = {
@@ -102,83 +102,102 @@ angular.module('ebay').controller('homeCntrl', [ '$rootScope', '$scope', '$http'
 
 				dispMsg = "Congrats You have listed the item successfully!!!";
 			} else if (data.statusCode == 401) {
-				
+
 				dispMsg = "There was some issue.Please try listing the item again!!!";
 			}
-			$state.go('msg_disp',{"msg" : dispMsg});
+			$state.go('msg_disp', {
+				"msg" : dispMsg
+			});
 		}).error(function(error) {
 			console.log("Error while listing the item : " + error);
 			dispMsg = "There was some issue.Please try listing the item again!!!";
-			$state.go('msg_disp',{"msg" : dispMsg});
+			$state.go('msg_disp', {
+				"msg" : dispMsg
+			});
 		});
 
 	}
-	
-	
-	$scope.checkIfBidValid=function(listing){
-		
+
+	$scope.checkIfBidValid = function(listing) {
+
 		console.log("checkIfBidValid : Checking if bid is valid !!");
 		var bid_end_date = new Date(listing.bid_end_date);
 		var currDate = new Date();
-		
-		if(bid_end_date>=currDate){
+
+		if (bid_end_date >= currDate) {
 			console.log("Valid Bid!!");
-			listing.isBidValid =  true;
-		}else{
+			listing.isBidValid = true;
+		} else {
 			console.log("Invalid Bid!!");
-			listing.isBidValid =  false;
+			listing.isBidValid = false;
 			alert("The bid has expired!!");
 		}
-		
+
 	};
-	
-	$scope.saveBidAmt=function(listing,bid_amt){
+
+	$scope.saveBidAmt = function(listing, bid_amt) {
 		console.log("Saving bidding details");
-		var dispMsg= '';
-		var req_data ={
-				
+		var dispMsg = '';
+		var comparedBid = 0;
+		var numUserAmt = Number(bid_amt);
+		if (listing.max_bid_amt != '0') {
+			comparedBid = Number(listing.max_bid_amt);
+		} else {
+			comparedBid = Number(listing.price);
+		}
+		if (numUserAmt > comparedBid) {
+
+			var req_data = {
+
 				"listing_id" : listing.listing_id,
 				"bid_amt" : bid_amt
-				
-		};
-		$http({
-			method : "POST",
-			url : '/saveBidDtls',
-			data : req_data
-		}).success(function(data) {
 
-			if (data.statusCode == 200) {
-				
-				console.log("Your bid was added successfully!!Results will be conveyed through emails!!");
-				dispMsg = "Your bid was added successfully!!Results will be conveyed through emails!!";
-			} else if (data.statusCode == 401) {
-				
-				console.log("There was some issue at the server.Please try placing the bid again!!!");
-				dispMsg ="There was some issue at the server.Please try placing the bid again!!!";
-			}
-			$state.go('msg_disp',{"msg" : dispMsg});
-		}).error(function(error) {
-			console.log("Error while listing the item : " + error);
-			dispMsg = "There was some issue at the server.Please try placing the bid again!!!";
-			$state.go('msg_disp',{"msg" : dispMsg});
-		});
+			};
+			$http({
+				method : "POST",
+				url : '/saveBidDtls',
+				data : req_data
+			}).success(function(data) {
+
+				if (data.statusCode == 200) {
+
+					console.log("Your bid was added successfully!!Results will be conveyed through emails!!");
+					dispMsg = "Your bid was added successfully!!Results will be conveyed through emails!!";
+				} else if (data.statusCode == 401) {
+
+					console.log("There was some issue at the server.Please try placing the bid again!!!");
+					dispMsg = "There was some issue at the server.Please try placing the bid again!!!";
+				}
+				$state.go('msg_disp', {
+					"msg" : dispMsg
+				});
+			}).error(function(error) {
+				console.log("Error while listing the item : " + error);
+				dispMsg = "There was some issue at the server.Please try placing the bid again!!!";
+				$state.go('msg_disp', {
+					"msg" : dispMsg
+				});
+			});
+
+		}else{
+			alert("Your bid amount should be more than the current highest bid!!!");
+		}
 	};
-	
-	
-	$scope.ifValidBid = function(listing){
+
+	$scope.ifValidBid = function(listing) {
 		var bid_end_date = new Date(listing.bid_end_date);
 		var currDate = new Date();
-		if(listing.list_type == 'BID'){
-   		if(bid_end_date>=currDate){
-   			console.log("Valid Bid!!");
-   			listing.isBidValid =  true;
-   			return true;
-   		}else{
-   			console.log("Invalid Bid!!");
-   			listing.isBidValid =  false;
-   			return false;
-   		}
-		}else{
+		if (listing.list_type == 'BID') {
+			if (bid_end_date >= currDate) {
+				console.log("Valid Bid!!");
+				listing.isBidValid = true;
+				return true;
+			} else {
+				console.log("Invalid Bid!!");
+				listing.isBidValid = false;
+				return false;
+			}
+		} else {
 			return true;
 		}
 	}

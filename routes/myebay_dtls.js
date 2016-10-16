@@ -7,7 +7,7 @@ var sql_queries = require('./sql_queries');
 exports.getBuyInfo = function(req, res) {
 
 	var json_resp;
-	global.winston.log('info',req.session.email_id + " : User is checking his/her buy history);
+	global.winston.log('info',req.session.email_id + " : User is checking his/her buy history");
 	
 	mysql.fetchUserBuyDtls(function(err, results) {
 

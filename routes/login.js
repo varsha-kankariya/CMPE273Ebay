@@ -9,7 +9,7 @@ var bcrypt = require('bcrypt-nodejs');
 //var winston = require('winston');
 
 function generateHash(password) {
-	 return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
+	return bcrypt.hashSync(password, bcrypt.genSaltSync(8));
 }
 
 function populateCartAndTotalCost(req, results) {
@@ -47,6 +47,31 @@ function populateCartAndTotalCost(req, results) {
 	console.log("In server : logn.js : populateCartAndTotalCost() : totalCostOfCart : " + totalCostOfCart);
 }
 
+function updateLoginTimeForUser(req, res, userDtlsAsStr) {
+	var json_resp;
+
+	mysql.updateLastLoginTime(function(err, results) {
+		if (err) {
+			console.log("Erro while updating the last login time : " + err.message);
+			throw err;
+		} else {
+			if (results) {
+				console.log("In server :  User details after login : " + userDtlsAsStr);
+				json_resp = {
+					"statusCode" : 200,
+					"cartItems" : JSON.stringify(req.session.cartItems),
+					"totalCostOfCart" : req.session.totalCostOfCart,
+					"userDtls" : userDtlsAsStr
+				};
+
+				res.send(json_resp);
+				res.end();
+			}
+		}
+
+	}, sql_queries.UPDATE_LAST_LOGIN_TIME, [ req.session.user_seq_id ]);
+}
+
 /**
  * Checks if the user who is trying to log in is already a registered user.If yes-> the cart details
  * are fetched from database and kept in session If no-> user is informed that he/she needs to
@@ -59,10 +84,10 @@ exports.checkLogin = function(req, res) {
 	var userPasswd = req.param("passwd");
 	var json_resp;
 	// If the username and password match
-	global.winston.log('info',email_id +" : User trying to login to the system.");
+	global.winston.log('info', email_id + " : User trying to login to the system.");
 	mysql.fetchUserDtlsWithCredentials(function(err, results) {
 		if (err) {
-			console.log("Error in checkLogin() : "+err.message);
+			console.log("Error in checkLogin() : " + err.message);
 			throw err;
 		} else {
 			if (results.length > 0) {
@@ -70,7 +95,7 @@ exports.checkLogin = function(req, res) {
 				bcrypt.compare(userPasswd, results[0].passwd, function(err, isPasswdValid) {
 
 					if (err) {
-						global.winston.log('info',email_id +" : Invalid Login");
+						global.winston.log('info', email_id + " : Invalid Login");
 						console.log("Invalid Login");
 						json_resp = {
 							"statusCode" : 401
@@ -87,7 +112,7 @@ exports.checkLogin = function(req, res) {
 							req.session.user_seq_id = results[0].user_id;
 							req.session.email_id = results[0].email_id;
 							req.session.acct_id = results[0].acct_id;
-							global.winston.log('info',req.session.email_id +" : Valid Login");
+							global.winston.log('info', req.session.email_id + " : Valid Login");
 							console.log("Fetching user dtls : Acct Id : " + results[0].acct_id);
 
 							console.log("In server : user email id : " + req.session.email_id);
@@ -95,10 +120,10 @@ exports.checkLogin = function(req, res) {
 							mysql.fetchCartForUser(function(err, results) {
 
 								if (err) {
-									console.log("Error while fetching cart for user : "+ err.message);
+									console.log("Error while fetching cart for user : " + err.message);
 									throw err;
 								} else {
-									global.winston.log('info',req.session.email_id +" : Fetching cart for the user");
+									global.winston.log('info', req.session.email_id + " : Fetching cart for the user");
 									console.log("In server : logn.js : checkLogin() : results as string : " + JSON.stringify(results));
 									if (results.length > 0) {
 										//Set the cart_id in the session
@@ -111,24 +136,15 @@ exports.checkLogin = function(req, res) {
 										req.session.cartItems = [];
 										req.session.totalCostOfCart = 0;
 									}
+									updateLoginTimeForUser(req, res, userDtlsAsStr);
 
-									console.log("In server :  User details after login : " + userDtlsAsStr);
-									json_resp = {
-										"statusCode" : 200,
-										"cartItems" : JSON.stringify(req.session.cartItems),
-										"totalCostOfCart" : req.session.totalCostOfCart,
-										"userDtls" : userDtlsAsStr
-									};
-
-									res.send(json_resp);
-									res.end();
 								}
 
 							}, sql_queries.FETCH_CART_FOR_USER, [ req.session.user_seq_id ]);
 
 						} else { //Invalid Login
 							console.log("Invalid Login");
-							global.winston.log('info',req.session.email_id +" : Invalid Login");
+							global.winston.log('info', req.session.email_id + " : Invalid Login");
 							json_resp = {
 								"statusCode" : 401
 							};
@@ -144,7 +160,7 @@ exports.checkLogin = function(req, res) {
 			//If no user record is found in db that means the user has not registered yet
 			else {
 				console.log("Invalid Login");
-				global.winston.log('info',email_id +" : Invalid Login");
+				global.winston.log('info', email_id + " : Invalid Login");
 				json_resp = {
 					"statusCode" : 401
 				};
@@ -157,13 +173,71 @@ exports.checkLogin = function(req, res) {
 
 };
 
+var fetchMaxBidAmts = function(req, res, actualList) {
+	var json_resp;
+	console.log("Adding information of max bid amts to the listing");
+	mysql.fetchMaxBidAmt(function(err, results) {
+
+		if (err) {
+			console.log("Error occurred in fetchMaxBidAmts() : " + err.message);
+			throw err;
+		} else {
+			if (results) {
+				var maxBidAmtsList = results;
+				console.log("Max Bid Amount Data : " + JSON.stringify(maxBidAmtsList));
+				for (var i = 0; i < actualList.length; i++) {
+					if (actualList[i].list_type == 'BID') {
+						for (var j = 0; j < maxBidAmtsList.length; j++) {
+
+							if (actualList[i].listing_id == maxBidAmtsList[j].listing_id) {
+								
+								console.log("Max Bid amt found for listing ID : " +actualList[i].listing_id)
+								actualList[i].max_bid_amt = maxBidAmtsList[j].max_bid_amt;
+								break;
+							} else {
+								actualList[i].max_bid_amt = 0;
+							}
+							console.log("Listing Id : " + actualList[i].listing_id + " Max_bid_amt : " + actualList[i].max_bid_amt);
+
+						}
+					}
+				}
+
+			} else {
+				for (var i = 0; i < actualList.length; i++) {
+
+					if (actualList[i].list_type == 'BID') {
+						actualList[i].max_bid_amt = 0;
+					}
+
+				}
+
+			}
+			var strListings = JSON.stringify(actualList);
+			console.log("Listing after checking for max bid amt : " + strListings);
+			var json_resp = {
+
+				"cartItems" : JSON.stringify(req.session.cartItems),
+				"totalCostOfCart" : req.session.totalCostOfCart,
+				"listings" : strListings
+			};
+
+			console.log("JSON response  : " + json_resp.listings);
+
+			res.send(json_resp);
+			res.end();
+		}
+	}, sql_queries.FETCH_MAX_BID_AMTS);
+
+};
+
 exports.redirectToHomepage = function(req, res) {
 
 	var json_resp = "";
 	var strListings = "";
 	var actualList;
 	console.log("In server : redirectToHomepage() ");
-	global.winston.log('info',req.session.email_id +" : Redirecting to home page");
+	global.winston.log('info', req.session.email_id + " : Redirecting to home page");
 	// Checks before redirecting whether the session is valid
 	if (req.session.email_id) {
 		// Set these headers to notify the browser not to maintain any cache for
@@ -172,32 +246,22 @@ exports.redirectToHomepage = function(req, res) {
 		//fetch the listings for the user
 
 		mysql.fetchListings(function(err, results) {
-			
+
 			if (err) {
 				console.log("Error in redirectToHomepage(): " + err.message);
 				throw err;
 			} else {
+
 				actualList = results;
 				console.log("Fetched listings for all users");
 
 				strListings = JSON.stringify(actualList);
 
-				console.log("Listings for user : " + strListings);
+				//console.log("Listings for user : " + strListings);
 
 				console.log("Not to maintain headers");
 				res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
-
-				var json_resp = {
-
-					"cartItems" : JSON.stringify(req.session.cartItems),
-					"totalCostOfCart" : req.session.totalCostOfCart,
-					"listings" : strListings
-				};
-
-				console.log("JSON response  : " + json_resp.listings);
-
-				res.send(json_resp);
-				res.end();
+				fetchMaxBidAmts(req, res, actualList);
 
 			}
 
@@ -215,19 +279,19 @@ function createNewUserRecord(req, res, acct_id) {
 	var json_resp;
 	var hashedPasswd = generateHash(req.body.passwd);
 	console.log("Hashed Password :" + hashedPasswd);
-	global.winston.log('info',req.body.email_id +" : Registering new user");
+	global.winston.log('info', req.body.email_id + " : Registering new user");
 	mysql.addNewUserRecord(function(err, results) {
 
 		if (err) {
 
 			if (err.code == 'ER_DUP_ENTRY') {
 				console.log("In server : Some error while registering the user : " + err.code);
-				global.winston.log('info',req.body.email_id +" : User already has a account");
+				global.winston.log('info', req.body.email_id + " : User already has a account");
 				json_resp = {
 					"status_code" : 402
 				};
 			} else {
-				console.log("Error in createNewUserRecord() : "+err.message);
+				console.log("Error in createNewUserRecord() : " + err.message);
 				json_resp = {
 					"status_code" : 401
 				};
@@ -236,7 +300,7 @@ function createNewUserRecord(req, res, acct_id) {
 
 		} else {
 			if (results.insertId) {
-				global.winston.log('info',req.body.email_id +" : New user account created");
+				global.winston.log('info', req.body.email_id + " : New user account created");
 				console.log("In server : Registering a new user : " + results.insertId);
 				json_resp = {
 					"user_id" : results.insertId,
@@ -261,7 +325,7 @@ exports.registerUser = function(req, res) {
 
 	mysql.createNewUserAcct(function(err, results) {
 		if (err) {
-			global.winston.log('info',req.body.email_id +" : Error : " + err.message);
+			global.winston.log('info', req.body.email_id + " : Error : " + err.message);
 			throw err;
 		} else {
 			if (results.insertId) {
@@ -285,7 +349,7 @@ exports.registerUser = function(req, res) {
 // Logout the user - invalidate the session
 exports.logout = function(req, res) {
 	console.log("In server : Destroying session");
-	global.winston.log('info',req.session.email_id +" : User logging out");
+	global.winston.log('info', req.session.email_id + " : User logging out");
 	req.session.destroy();
 
 	res.redirect('/');

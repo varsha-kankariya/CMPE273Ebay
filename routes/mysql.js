@@ -44,6 +44,30 @@ exports.fetchUserDtlsWithCredentials = function(callback, sqlQuery, options) {
 
 };
 
+
+exports.updateLastLoginTime = function(callback, sqlQuery, options) {
+	console.log("\nSQL Query::" + sqlQuery);
+
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			throw err;
+		} else {
+			connection.query(sqlQuery, options, function(err, rows, fields) {
+				if (err) {
+					console.log("ERROR: " + err.message);
+				} else { // return err or result
+					console.log("DB Results:" + rows);
+					callback(err, rows);
+				}
+				console.log("\nConnection released..");
+				connection.release();
+			});
+
+		}
+	});
+
+};
+
 exports.createNewUserAcct = function(callback, sqlQuery) {
 
 	console.log("\nSQL Query::" + sqlQuery);
@@ -114,6 +138,32 @@ exports.fetchListings = function(callback, sqlQuery) {
 				}
 				console.log("\nConnection released..");
 				connection.release();
+			});
+
+		}
+	});
+};
+
+
+
+exports.fetchMaxBidAmt = function(callback, sqlQuery) {
+
+	console.log("\nSQL Query::" + sqlQuery);
+
+	pool.getConnection(function(err, connection) {
+		if (err) {
+			throw err;
+		} else {
+			connection.query(sqlQuery, function(err, rows, fields) {
+				if (err) {
+					console.log("ERROR: " + err.message);
+				} else { // return err or result
+					console.log("DB Results:" + rows);
+					callback(err, rows);
+				}
+				console.log("\nConnection released..");
+				connection.release();
+
 			});
 
 		}

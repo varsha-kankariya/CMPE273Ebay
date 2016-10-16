@@ -27,8 +27,11 @@
 							<td>Email ID</td>
 							<td>{{user_info.email_id}}</td>
 						</tr>
-						
-
+						<tr>
+							<td>Last Logged In</td>
+							<td>{{user_info.last_login == null ? "-" : user_info.last_login}}</td>
+						</tr>
+							
 					</table>
 				</div>
 			</div>
