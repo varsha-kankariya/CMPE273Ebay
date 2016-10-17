@@ -14,6 +14,8 @@ var express = require('express')
   , order_proc = require('./routes/order_proc')
   , myebay_dtls = require('./routes/myebay_dtls')
   , mysql = require('./routes/mysql')
+  , chai = require('chai')
+  , chaiHttp = require('chai-http')
   //Importing the 'client-sessions' module
   , session = require('client-sessions');
 
@@ -79,7 +81,15 @@ app.post('/getPersonalInfo',myebay_dtls.getPersonalInfo);
 app.post('/getSellInfo',myebay_dtls.getSellInfo);
 app.post('/getBidInfo',myebay_dtls.getBidInfo);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+server.on('close', function() {
+	  console.log(' Stopping ...');
+	});
+server.listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
   mysql.createConnectionPool();
 });
+
+
+
+module.exports = app;
