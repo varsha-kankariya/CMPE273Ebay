@@ -15,7 +15,7 @@
 										<tr>
 											<td><label>Item Name :</label> {{item.item_name}}</td>
 											<td />
-											<td><label>Price : </label>{{item.totalCost}}</td>
+											<td><label>Price : </label>${{item.totalCost}}</td>
 										</tr>
 										<tr>
 											<td><label>Item_Desc :</label> {{item.item_desc}}</td>
@@ -62,16 +62,16 @@
 					<table class="table">
 						<tr style="border :0;">
 							<td>Subtotal({{cartItems.length}} items) :</td>
-							<td>{{totalCostOfCart}}</td>
+							<td>${{totalCostOfCart}}</td>
 						</tr>
 						<tr style = "border-top : 0;">
 							<td>Shipping Charges :</td>
-							<td>{{shipType.ship_cost}}</td>
+							<td>${{shipType.ship_cost}}</td>
 							<!-- need to add code over here -->
 						</tr>
 						<tr>
 							<td><h3>Total :</h3></td>
-							<td><h3>{{totalOrderCost}}</h3></td>
+							<td><h3>${{totalOrderCost}}</h3></td>
 
 						</tr>
 					</table>
