@@ -216,7 +216,7 @@ var fetchMaxBidAmts = function(req, res, actualList) {
 			var strListings = JSON.stringify(actualList);
 			console.log("Listing after checking for max bid amt : " + strListings);
 			var json_resp = {
-
+				"statusCode" : 200,	
 				"cartItems" : JSON.stringify(req.session.cartItems),
 				"totalCostOfCart" : req.session.totalCostOfCart,
 				"listings" : strListings
