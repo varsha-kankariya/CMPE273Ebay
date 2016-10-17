@@ -2,7 +2,7 @@
 
 	<div class="col-md-3"></div>
 
-	<div class="col-md-6" style="border: 1px solid #ddd;padding :0;margin:0;">
+	<div class="col-md-6" style="border: 1px solid #ddd; padding: 0; margin: 0;">
 
 		<div>
 			<ul class="nav nav-tabs">
@@ -14,7 +14,7 @@
 
 			<div class="tab-content">
 
-				<div id='login' class="col-md-4 tab-pane fade in active" >
+				<div id='login' class="col-md-4 tab-pane fade in active">
 					<div class="row">
 						<div class="col-md-12" style="margin: 10px;">
 							Username:<br>
@@ -67,7 +67,8 @@
 						</div>
 						<div class="col-md-12" style="margin: 10px;">
 							Email Id:<br>
-							<input type="email" name="emailId" ng-model="email_id" required />
+							<input type="email" name="emailId" ng-model="email_id"
+								pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required />
 							<!-- TODO : Insert pattern here for validating email Id -->
 						</div>
 
